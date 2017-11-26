@@ -1,0 +1,17 @@
+{
+  "name": "linkstoinlinebase64converter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "convert.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Maor Dahan <mdahan@trustificorp.com>",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.6.0",
+    "dom5": "^2.3.0",
+    "parse5": "^3.0.3",
+    "request": "^2.83.0"
+  }
+}
