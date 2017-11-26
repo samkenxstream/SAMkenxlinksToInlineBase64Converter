@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c240230a-4bcb-44f7-8f46-215e443c0197" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -21,11 +21,12 @@
       <file leaf-file-name="convert.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/convert.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+            <state relative-caret-position="150">
+              <caret line="10" column="26" lean-forward="true" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
               <folding>
                 <element signature="e#471#1596#0" expanded="false" />
                 <element signature="e#1628#1925#0" expanded="false" />
+                <element signature="e#1982#2678#0" expanded="false" />
                 <element signature="e#2713#2785#0" expanded="false" />
                 <element signature="e#2832#3096#0" expanded="false" />
               </folding>
@@ -39,29 +40,6 @@
             <state relative-caret-position="120">
               <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="newhtmltest.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/newhtmltest.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="emailTemplateLogoLink.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/emailTemplateLogoLink.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="66" column="51" lean-forward="true" selection-start-line="66" selection-start-column="51" selection-end-line="66" selection-end-column="51" />
-              <folding>
-                <element signature="n#style#0;n#td#0;n#tr#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#a#0;n#td#0;n#tr#0;n#table#0;n#td#0;n#tr#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -266,15 +244,23 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1511603562423</updated>
-      <workItem from="1511603564203" duration="12688000" />
+      <workItem from="1511603564203" duration="12873000" />
     </task>
+    <task id="LOCAL-00001" summary="added ignore file">
+      <created>1511681740729</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1511681740730</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12688000" />
+    <option name="totallyTimeSpent" value="12873000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1911" height="983" extended-state="6" />
+    <frame x="0" y="23" width="1911" height="983" extended-state="0" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25079367" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -299,6 +285,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="added ignore file" />
+    <option name="LAST_COMMIT_MESSAGE" value="added ignore file" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -328,19 +318,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/newhtmltest.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="120">
+          <caret line="8" column="14" lean-forward="true" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/convert.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+        <state relative-caret-position="150">
+          <caret line="10" column="26" lean-forward="true" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
           <folding>
             <element signature="e#471#1596#0" expanded="false" />
             <element signature="e#1628#1925#0" expanded="false" />
+            <element signature="e#1982#2678#0" expanded="false" />
             <element signature="e#2713#2785#0" expanded="false" />
             <element signature="e#2832#3096#0" expanded="false" />
           </folding>

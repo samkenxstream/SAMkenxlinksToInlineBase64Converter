@@ -62,3 +62,4 @@ typings/
 
 .gitignore
 .idea/inspectionProfiles/
+/newhtmltest.html
