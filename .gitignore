@@ -59,7 +59,8 @@ typings/
 # dotenv environment variables file
 .env
 
-
+product/*.html
+tmpFiles/*
 .gitignore
 .idea/inspectionProfiles/
 /newhtmltest.html

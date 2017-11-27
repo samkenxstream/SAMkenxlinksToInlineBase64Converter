@@ -4,61 +4,65 @@ const fs = require('fs'),
     dom5 = require('dom5'),
     parse5 = require('parse5'),
     eachLimit = require('async/eachLimit'),
+    fileType = require('file-type'),
+    path = require('path'),
     request = require('request');
 
-let mimetypes = {
-    '.gif':  'image/gif',
-    '.jpeg': 'image/jpeg',
-    '.jpg':  'image/jpeg',
-    '.jpe':  'image/jpeg',
-    '.png':  'image/png'
-};
+const tmpDir = './tmpFiles/',
+    productDir = './product/';
 
-const htmlTemplate = fs.readFileSync("./emailTemplateLogoLink.html", 'utf8'); // for testing.
+
+//const htmlTemplate = fs.readFileSync("./test/emailTemplateLogoLink.html", 'utf8'); // for testing.
 
 
 let doConvert = function(html, callback) {
 
     try {
 
-        let doc = parse5.parse(html);
+        let doc = parse5.parse(fs.readFileSync(html, 'utf8'));
         let imgTags = dom5.queryAll(doc, dom5.predicates.hasTagName('img'));
 
-        console.log('found ' + imgTags.length + ' img tags');
-
-        let imgDataObj = {};
-        if (!(imgTags && imgTags.length)) {
-            return callback(html);
-        } else {
+        if (!imgTags || !imgTags.length) {
+            console.log('did not find any img tags');
+            return callback();
+        }
+        else {
+            console.log('found ' + imgTags.length + ' img tags');
+            let imgDataObj = {};
             eachLimit(imgTags, 1, (obj, next) => {
+
                 let attr = getAttr(obj);
                 if (attr.src) {
-                    imgDataObj.localFileName = 'localTmpImage';
-
+                    imgDataObj.localFileName = path.resolve(tmpDir+'localDownloadedImg');
                     downloadImg(attr.src.value, imgDataObj, function() {
-                        let base64 = encode(imgDataObj.localFileName);
-
-                        attr.src.value = 'data:image/png' //+ imgDataObj.contentType || 'png'
-                            + ';base64,' + base64;
-
-                        next();
+                        if (imgDataObj.err) {
+                            console.log('err: ' + attr.src.value + ' ' + imgDataObj.err);
+                            next();
+                        }
+                        else {
+                            let theData = encode(imgDataObj.localFileName);
+                            let theType = fileType(theData.buffer);
+                            attr.src.value = 'data:' + theType.mime
+                                + ';base64,' + theData.base64;
+                            next();
+                        }
                     });
                 }
                 else {
                     next();
                 }
             }, function(err) {
-                // TODO:
-                callback(parse5.serialize(doc));
+                if (err)
+                    return callback(err);
+                return callback(null, parse5.serialize(doc));
             });
         }
 
     } catch (ex) {
-        console.log(ex);
+        callback(ex);
     }
 
 };
-
 
 let getAttr = function(img) {
     let retAttr = {
@@ -78,40 +82,67 @@ let getAttr = function(img) {
 };
 
 let downloadImg = function(uri, imgDataObj, callback) {
-    request.head(uri, function(err, res, body) {
 
-        if (err) {
-            return callback(err);
+    try {
+        if (fs.existsSync(uri) && fs.lstatSync(uri).isFile()) {
+            imgDataObj.localFileName = uri;
+            console.log(uri + ' is local file');
+            return callback();
         }
 
-        //if (!res.headers['content-type'] || !res.headers['content-length']){
-        //    return callback('missing headers');
-        //}
-
-        // TODO: check content-type headers against white list.
-        console.log('content-type:', res.headers['Content-Type']);
-        imgDataObj.contentType = res.headers['Content-Type'];
-
-        console.log('content-length:', res.headers['Content-Length']);
-        imgDataObj.contentLength = res.headers['Content-Length'];
-
-        request(uri).pipe(fs.createWriteStream(imgDataObj.localFileName)).on('close', callback);
-    });
+        request.head(uri, function (err, res, body) {
+            if (err) {
+                imgDataObj.err = err;
+                return callback();
+            }
+            request(uri).pipe(fs.createWriteStream(imgDataObj.localFileName)).on('close', callback);
+        });
+    }
+    catch (ex) {
+        imgDataObj.err = ex;
+        return callback();
+    }
 };
 
 let encode = function(filePath) {
-    return new Buffer(fs.readFileSync(filePath)).toString('base64');
+    let buff = new Buffer(fs.readFileSync(filePath));
+    return {
+        buffer: buff,
+        base64: buff.toString('base64'),
+    };
 };
 
 
 
-doConvert(htmlTemplate, function(newHtml) {
-    if (newHtml)
-        fs.writeFile("newhtmltest.html", newHtml, function(err) {
-            if(err)
-                return console.log(err);
-            console.log("The new html was saved!");
-        });
-    else
-        console.log("new html not found!");
-});
+if (!process.argv[2] || !fs.existsSync(process.argv[2]) || !fs.lstatSync(process.argv[2]).isFile()) {
+    console.log('Usage: input should be path to html file or to directory containing html files with assets')
+    process.exit(0);
+}
+else {
+
+    let filename = process.argv[2];
+    doConvert(filename, function(err, newHtml) {
+        if (err) {
+            console.log('failed: ' + err);
+            process.exit(0);
+        }
+
+        if (newHtml) {
+            let newfilename = productDir + path.basename(filename, path.extname(filename)) + '_inlineBase64.html';
+            fs.writeFile(newfilename, newHtml, function (err) {
+                if (err) {
+                    console.log('failed write new file: ' + err);
+                    process.exit(0);
+                }
+                console.log("New html was saved here: " + newfilename);
+                process.exit(1);
+            });
+        }
+        else {
+            console.log("no changes");
+            process.exit(1);
+        }
+    });
+
+}
+
