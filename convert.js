@@ -12,19 +12,19 @@ const tmpDir = './tmpFiles/',
     productDir = './product/';
 
 
-//const htmlTemplate = fs.readFileSync("./test/emailTemplateLogoLink.html", 'utf8'); // for testing.
-
+//const htmlTemplate = fs.readFileSync("./test/imagesLinksTest.html", 'utf8'); // for testing.
 
 let doConvert = function(html, callback) {
 
     try {
 
-        let doc = parse5.parse(fs.readFileSync(html, 'utf8'));
+        let doc = parse5.parse(html);
+        // find all img tags
         let imgTags = dom5.queryAll(doc, dom5.predicates.hasTagName('img'));
 
         if (!imgTags || !imgTags.length) {
             console.log('did not find any img tags');
-            return callback();
+            return callback(null, null);
         }
         else {
             console.log('found ' + imgTags.length + ' img tags');
@@ -113,36 +113,51 @@ let encode = function(filePath) {
 };
 
 
+if (require.main === module) {
 
-if (!process.argv[2] || !fs.existsSync(process.argv[2]) || !fs.lstatSync(process.argv[2]).isFile()) {
-    console.log('Usage: input should be path to html file or to directory containing html files with assets')
-    process.exit(0);
-}
-else {
+    console.log('called directly');
 
-    let filename = process.argv[2];
-    doConvert(filename, function(err, newHtml) {
-        if (err) {
-            console.log('failed: ' + err);
-            process.exit(0);
-        }
+    if (!process.argv[2] || !fs.existsSync(process.argv[2]) || !fs.lstatSync(process.argv[2]).isFile()) {
+        console.log('Usage: input should be path to html file or to directory containing html files with assets')
+        process.exit(0);
+    }
+    else {
 
-        if (newHtml) {
-            let newfilename = productDir + path.basename(filename, path.extname(filename)) + '_inlineBase64.html';
-            fs.writeFile(newfilename, newHtml, function (err) {
-                if (err) {
-                    console.log('failed write new file: ' + err);
-                    process.exit(0);
-                }
-                console.log("New html was saved here: " + newfilename);
+        if (!fs.existsSync(productDir))
+            fs.mkdirSync(productDir);
+
+        if (!fs.existsSync(tmpDir))
+            fs.mkdirSync(tmpDir);
+
+        let filename = process.argv[2];
+        let originHtml = fs.readFileSync(filename, 'utf8');
+        doConvert(originHtml, function(err, newHtml) {
+            if (err) {
+                console.log('failed: ' + err);
+                process.exit(0);
+            }
+
+            if (newHtml) {
+                let newfilename = productDir + path.basename(filename, path.extname(filename)) + '_inlineBase64.html';
+                fs.writeFile(newfilename, newHtml, function (err) {
+                    if (err) {
+                        console.log('failed write new file: ' + err);
+                        process.exit(0);
+                    }
+                    console.log("New html was saved here: " + newfilename);
+                    process.exit(1);
+                });
+            }
+            else {
+                console.log("no changes");
                 process.exit(1);
-            });
-        }
-        else {
-            console.log("no changes");
-            process.exit(1);
-        }
-    });
+            }
+        });
+
+    }
 
 }
 
+module.exports = {
+    doConvert: doConvert
+};
