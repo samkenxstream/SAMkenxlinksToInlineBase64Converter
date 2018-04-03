@@ -11,6 +11,8 @@ const fs = require('fs'),
 const tmpDir = './tmpFiles/',
     productDir = './product/';
 
+// for local files
+let baseHtmlDir = '';
 
 //const htmlTemplate = fs.readFileSync("./test/imagesLinksTest.html", 'utf8'); // for testing.
 
@@ -84,9 +86,11 @@ let getAttr = function(img) {
 let downloadImg = function(uri, imgDataObj, callback) {
 
     try {
-        if (fs.existsSync(uri) && fs.lstatSync(uri).isFile()) {
-            imgDataObj.localFileName = uri;
-            console.log(uri + ' is local file');
+        let localPath = path.resolve(`${baseHtmlDir}/${uri}`);
+        console.log(localPath);
+        if (fs.existsSync(localPath) && fs.lstatSync(localPath).isFile()) {
+            imgDataObj.localFileName = localPath;
+            console.log(localPath + ' is local file');
             return callback();
         }
 
@@ -130,6 +134,12 @@ if (require.main === module) {
             fs.mkdirSync(tmpDir);
 
         let filename = process.argv[2];
+        baseHtmlDir = path.dirname(filename);
+
+        // for manual
+        //if (!filename)
+        //    filename = 'C:\\Users\\MaorDahan\\Desktop\\New folder\\new-welcome.html';
+
         let originHtml = fs.readFileSync(filename, 'utf8');
         doConvert(originHtml, function(err, newHtml) {
             if (err) {
